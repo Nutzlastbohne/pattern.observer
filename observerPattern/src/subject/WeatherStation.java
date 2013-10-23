@@ -1,6 +1,5 @@
 package subject;
 
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -20,51 +19,59 @@ public class WeatherStation implements ISubject {
 	}
 	
 	private float getTemperature() {
-		return 0.0f;
+		return temperature;
 	}
 	
 	private float getHumidity() {
-		return 0.0f;
+		return humidity;
 	}
 	
 	private float getAirPressure(){
-		return 0.0f;
+		return airPressure;
 	}
 	
-	public void updateData() {
-		getHumidity();
-		getTemperature();
-		getAirPressure();
-		
+	public void dataChanged() {
 		notifyObersvers();
 	}
 	
-	private float getRandomFloat(float min, float max) {
-		float returnValue = randomizer.nextFloat();
+	public void setData(float temperature, float humidity, float airPressure){
 		
+		this.temperature = temperature;
+		this.humidity = humidity;
+		this.airPressure = airPressure;
+		
+		dataChanged();
+	}
+	
+	public void setRandomData(){
+		setData(getRandomFloat(-20.3f, 43.8f), 
+				getRandomFloat(0.0f, 150.4f), 
+				getRandomFloat(0.5f, 1.9f));
+		
+	}
+	
+	private float getRandomFloat(float min, float max) {
+		float randomFloat = randomizer.nextFloat();
 		float range = max - min;
 		float offset = min;
 		
-		returnValue = offset + range*returnValue;
-		
-		return returnValue;
+		return offset + range*randomFloat;
 	}
 
 	@Override
-	public void addObserver(IObserver observer) {
+	public void registerObserver(IObserver observer) {
 		observers.add(observer);
 	}
 
 	@Override
-	public void removeObserver(IObserver observer) {
+	public void deregisterObserver(IObserver observer) {
 		observers.remove(observer);
 	}
 
 	@Override
 	public void notifyObersvers() {
 		for (IObserver observer : observers) {
-			observer.updateWeatherData(temperature, humidity, airPressure);
+			observer.updateWeatherData(getTemperature(), getHumidity(), getAirPressure());
 		}
 	}
-
 }
