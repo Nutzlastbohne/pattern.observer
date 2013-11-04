@@ -1,0 +1,13 @@
+=== Obersever Pattern ===
+
+-- Naming Conventions --
+
+Subject	- Notifies list of registered objects to update their status
+Object	- Receiver of Subject updates
+
+-- Other Names --
+
+Viewer	- Implementations of 'Objects' 
+
+-- How it works --
+Subjects

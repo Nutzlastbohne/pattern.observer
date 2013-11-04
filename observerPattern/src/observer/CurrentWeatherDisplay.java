@@ -14,8 +14,8 @@ public class CurrentWeatherDisplay implements IObserver, IViewer {
 	
 	@Override
 	public void display() {
-		System.out.println("-= Current Wather =-");
-		System.out.printf("%2.1f°C, %3.1f%, %1.2f someUnit" , temperature, humidity, airPressure);
+		System.out.println("-= Current Weather =-");
+		System.out.printf("%2.1f°C | %3.1f | %1.2f someUnit\n" , temperature, humidity, airPressure);
 	}
 
 	@Override
