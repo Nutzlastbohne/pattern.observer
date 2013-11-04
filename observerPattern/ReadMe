@@ -10,4 +10,5 @@ Object	- Receiver of Subject updates
 Viewer	- Implementations of 'Objects' 
 
 -- How it works --
-Subjects
+After initializing the Subject, instances of observers are created, which register themselves to the subject.
+Changing values in the Subject will call a special method, which loops over a list of observers and calls their "update" method   
