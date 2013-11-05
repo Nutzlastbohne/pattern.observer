@@ -1,23 +1,19 @@
 package observer;
 
-import subject.ISubject;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ForecastDisplay implements IObserver, IViewer {
+public class ForecastDisplay implements Observer, IViewer {
 
 	String forecast = "";
 
 
-	public ForecastDisplay(ISubject subject) {
-		subject.registerObserver(this);
+	public ForecastDisplay(Observable observable) {
+		observable.addObserver(this);
 	}
 
 	@Override
-	public void display() {
-		System.out.println("Forecast: " + forecast);
-	}
-
-	@Override
-	public void updateWeatherData(float temperature, float humidity, float airPressure) {
+	public void update(Observable o, Object arg) {
 		generateForecast();
 		display();
 	}
@@ -34,4 +30,8 @@ public class ForecastDisplay implements IObserver, IViewer {
 		}
 	}
 
+	@Override
+	public void display() {
+		System.out.println("Forecast: " + forecast);
+	}
 }

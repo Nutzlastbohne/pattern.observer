@@ -1,32 +1,31 @@
 package observer;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-import subject.ISubject;
+import subject.WeatherStation;
 
-public class WeatherStatisticsDisplay implements IObserver, IViewer {
+public class WeatherStatisticsDisplay implements Observer, IViewer {
 
 	ArrayList<Float> temperatureList = new ArrayList<Float>();
-
 	public float minTemp = Float.MIN_VALUE;
 	public float maxTemp = Float.MAX_VALUE;
 	public float avgTemp = 0.0f;
 
 
-	public WeatherStatisticsDisplay(ISubject subject) {
-		subject.registerObserver(this);
+	public WeatherStatisticsDisplay(Observable observable) {
+		observable.addObserver(this);
 	}
 
 	@Override
-	public void display() {
-		System.out.printf("Min/Max/Avg: %2.1f, %2.1f, %2.1f\n", minTemp, maxTemp, avgTemp);
-	}
-
-	@Override
-	public void updateWeatherData(float temperature, float humidity, float airPressure) {
-		temperatureList.add(new Float(temperature));
-		updateStatistics();
-		display();
+	public void update(Observable obs, Object dataStructure) {
+		if (obs instanceof WeatherStation) {
+			WeatherStation station = (WeatherStation) obs;
+			temperatureList.add(new Float(station.getTemperature()));
+			updateStatistics();
+			display();
+		}
 	}
 
 	private void updateStatistics() {
@@ -52,4 +51,8 @@ public class WeatherStatisticsDisplay implements IObserver, IViewer {
 		avgTemp = tempSum / temperatureList.size();
 	}
 
+	@Override
+	public void display() {
+		System.out.printf("Statistics - Min/Max/Avg: %2.1f, %2.1f, %2.1f\n", minTemp, maxTemp, avgTemp);
+	}
 }

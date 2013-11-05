@@ -1,11 +1,12 @@
 package subject;
 
 import java.util.HashSet;
+import java.util.Observable;
 import java.util.Random;
 
 import observer.IObserver;
 
-public class WeatherStation implements ISubject {
+public class WeatherStation extends Observable {
 
 	HashSet<IObserver> observers;
 	Random randomizer;
@@ -14,24 +15,24 @@ public class WeatherStation implements ISubject {
 	float airPressure;
 	
 	public WeatherStation() {
-		observers = new HashSet<IObserver>();
 		randomizer = new Random();
 	}
 	
-	private float getTemperature() {
+	public float getTemperature() {
 		return temperature;
 	}
 	
-	private float getHumidity() {
+	public float getHumidity() {
 		return humidity;
 	}
 	
-	private float getAirPressure(){
+	public float getAirPressure(){
 		return airPressure;
 	}
 	
 	public void dataChanged() {
-		notifyObersvers();
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void setData(float temperature, float humidity, float airPressure){
@@ -56,22 +57,5 @@ public class WeatherStation implements ISubject {
 		float offset = min;
 		
 		return offset + range*randomFloat;
-	}
-
-	@Override
-	public void registerObserver(IObserver observer) {
-		observers.add(observer);
-	}
-
-	@Override
-	public void deregisterObserver(IObserver observer) {
-		observers.remove(observer);
-	}
-
-	@Override
-	public void notifyObersvers() {
-		for (IObserver observer : observers) {
-			observer.updateWeatherData(getTemperature(), getHumidity(), getAirPressure());
-		}
 	}
 }
